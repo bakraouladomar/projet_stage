@@ -1,2 +1,0 @@
-date,prod_wet_t,humidite_pct,prod_sec_t,conso_farine_brute_t,conso_farine_corrigee_t,delta_silo_t,delta_silo_statut,prod_vers_sol_t,rejets_vers_sol_t,residu_T3_t,residu_T2_pct,capteur_niveau_fiable,capteur_niveau_pct_fige,capteur_niveau_ecart_type,debit_th20_fiable,debit_th20_tonnage_fantome_t,debit_do12_fiable,debit_do12_tonnage_bruit_t
-2026-05-11,3679.6,2.8,3576.6,3728.9,3356.0,0.0,INDETERMINE (capteur fige ou insuffisant) -> traite comme 0 par defaut,6.1,15.7,198.7,5.56,False,85.1,2.105,True,32.4,True,47.2
