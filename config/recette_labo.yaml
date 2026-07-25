@@ -1,0 +1,46 @@
+# =========================================================================
+# PARAMETRES LABO — recette et humidite des composants du melange cru
+# =========================================================================
+# Ce fichier n'est PAS l'export TIS. Il vient du laboratoire et ne change
+# que lorsque le labo refait une analyse (pas tous les jours).
+# A mettre a jour manuellement quand le labo communique de nouvelles valeurs.
+#
+# composition_pct : part du composant dans le melange (%), doit sommer a 100
+# h2o_pct         : humidite du composant tel que recu (%)
+# =========================================================================
+
+date_derniere_analyse_labo: "2026-05-01"  # a mettre a jour a chaque nouvelle analyse
+
+BC1:
+  BT:
+    composition_pct: 43.67
+    h2o_pct: 2.25
+  HT:
+    composition_pct: 43.38
+    h2o_pct: 2.04
+  Pelite:
+    composition_pct: 9.33
+    h2o_pct: 7.44
+  Phtanite:
+    composition_pct: 2.58
+    h2o_pct: 6.81
+  Minerai_Fer:
+    composition_pct: 1.04
+    h2o_pct: 6.13
+
+BC2:
+  BT:
+    composition_pct: 37.42
+    h2o_pct: 2.50
+  HT:
+    composition_pct: 48.34
+    h2o_pct: 1.50
+  Pelite:
+    composition_pct: 6.87
+    h2o_pct: 8.00
+  Phtanite:
+    composition_pct: 5.66
+    h2o_pct: 7.00
+  Minerai_Fer:
+    composition_pct: 1.70
+    h2o_pct: 6.50
