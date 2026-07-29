@@ -1,0 +1,6 @@
+node_modules/
+.env
+data/inbox/*
+data/sent/*
+!data/inbox/.gitkeep
+*.log

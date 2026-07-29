@@ -1,0 +1,19 @@
+{
+  "name": "bilan-farine-backend",
+  "version": "1.0.0",
+  "description": "API de calcul du bilan farine (broyeur cru Tétouan) à partir de l'export TIS.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^4.6.0",
+    "nodemailer": "^9.0.3",
+    "pdfkit": "^0.19.1",
+    "xlsx": "^0.18.5"
+  }
+}

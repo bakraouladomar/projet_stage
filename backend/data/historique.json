@@ -1,0 +1,134 @@
+[
+  {
+    "day": "2026-05-11",
+    "line": "BC1",
+    "T2": 5.64,
+    "T3": 201.8,
+    "prodSec": 3577,
+    "seec": 16.18,
+    "heuresMarche": 20.6,
+    "arrets": 5,
+    "savedAt": "2026-07-29T09:29:18.346Z"
+  },
+  {
+    "day": "2026-07-17",
+    "line": "BC1",
+    "T2": -5.2,
+    "T3": -186.4,
+    "prodSec": 3581,
+    "seec": 15.83,
+    "heuresMarche": 20.3,
+    "arrets": 1,
+    "savedAt": "2026-07-27T09:59:07.850Z"
+  },
+  {
+    "day": "2026-07-19",
+    "line": "BC1",
+    "T2": 8.32,
+    "T3": 337.1,
+    "prodSec": 4050,
+    "seec": 15.31,
+    "heuresMarche": 22.5,
+    "arrets": 1,
+    "savedAt": "2026-07-29T09:16:07.508Z"
+  },
+  {
+    "day": "2026-07-20",
+    "line": "BC1",
+    "T2": 6.41,
+    "T3": 228.7,
+    "prodSec": 3565,
+    "seec": 15.51,
+    "heuresMarche": 19.6,
+    "arrets": 3,
+    "savedAt": "2026-07-27T11:01:19.101Z"
+  },
+  {
+    "day": "2026-07-21",
+    "line": "BC1",
+    "T2": 3.61,
+    "T3": 134.2,
+    "prodSec": 3717,
+    "seec": 15.52,
+    "heuresMarche": 20.5,
+    "arrets": 3,
+    "savedAt": "2026-07-27T09:58:04.638Z"
+  },
+  {
+    "day": "2026-07-22",
+    "line": "BC1",
+    "T2": 4.1,
+    "T3": 147.8,
+    "prodSec": 3601,
+    "seec": 15.67,
+    "heuresMarche": 19.8,
+    "arrets": 3,
+    "savedAt": "2026-07-27T09:57:57.666Z"
+  },
+  {
+    "day": "2026-07-23",
+    "line": "BC1",
+    "T2": 2.93,
+    "T3": 103.9,
+    "prodSec": 3547,
+    "seec": 15.65,
+    "heuresMarche": 19.7,
+    "arrets": 3,
+    "savedAt": "2026-07-29T09:16:19.200Z"
+  },
+  {
+    "day": "2026-07-24",
+    "line": "BC1",
+    "T2": -1.35,
+    "T3": -44.7,
+    "prodSec": 3301,
+    "seec": 15.92,
+    "heuresMarche": 18.6,
+    "arrets": 3,
+    "savedAt": "2026-07-29T09:15:30.212Z"
+  },
+  {
+    "day": "2026-07-25",
+    "line": "BC1",
+    "T2": -1.64,
+    "T3": -52,
+    "prodSec": 3167,
+    "seec": 15.96,
+    "heuresMarche": 17.9,
+    "arrets": 3,
+    "savedAt": "2026-07-28T17:55:43.010Z"
+  },
+  {
+    "day": "2026-07-26",
+    "line": "BC1",
+    "T2": 6.35,
+    "T3": 268,
+    "prodSec": 4221,
+    "seec": 15.51,
+    "heuresMarche": 24,
+    "arrets": 0,
+    "savedAt": "2026-07-29T09:15:59.518Z"
+  },
+  {
+    "day": "2026-07-27",
+    "line": "BC1",
+    "T2": 5.26,
+    "T3": 166,
+    "prodSec": 3155,
+    "seec": 15.95,
+    "heuresMarche": 17.5,
+    "arrets": 9,
+    "savedAt": "2026-07-29T09:30:51.547Z"
+  },
+  {
+    "day": "2026-07-28",
+    "line": "BC1",
+    "T2": 1.87,
+    "T3": 60.5,
+    "prodSec": 3236,
+    "seec": 15.72,
+    "heuresMarche": 18.2,
+    "arrets": 3,
+    "savedAt": "2026-07-29T09:23:40.951Z"
+  }
+]
