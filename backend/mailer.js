@@ -47,7 +47,7 @@ async function verify() {
 /**
  * Construit le corps HTML de l'email à partir de l'interprétation.
  */
-function buildEmailHtml(R, day, line, interp, fmtDayFR) {
+function buildEmailHtml(R, day, line, interp, fmtDayFR, history) {
   const pos = interp.pos;
   const rows = interp.summary.map(s =>
     `<tr><td style="padding:6px 0;color:#132a40">${s.label}</td>
@@ -57,6 +57,39 @@ function buildEmailHtml(R, day, line, interp, fmtDayFR) {
   const flags = interp.flags.length
     ? `<div style="margin:12px 0;padding:10px 14px;background:#fdecec;border:1px solid #f3c9c9;border-radius:8px;color:#B23B3B;font-weight:600;font-size:13px">⚠ ${interp.flags.join(' · ')}</div>`
     : '';
+
+  // --- Évolution : les 7 dernières journées de l'historique ---
+  let evolution = '';
+  if (history && history.length > 1) {
+    const derniers = history.slice(-7); // 7 derniers jours
+    const maxProd = Math.max(...derniers.map(e => e.prodSec || 0), 1);
+    const lignes = derniers.map(e => {
+      const p = e.T2 >= 0;
+      const w = Math.round((e.prodSec || 0) / maxProd * 100);
+      return `<tr>
+        <td style="padding:5px 0;color:#132a40">${fmtDayFR(e.day).replace(/\s\d{4}$/,'')}</td>
+        <td style="padding:5px 8px;text-align:right;font-family:monospace;font-weight:600;color:${p?'#6FA028':'#B23B3B'}">${p?'+':'−'}${Math.abs(e.T2).toFixed(1).replace('.',',')} %</td>
+        <td style="padding:5px 0;width:45%">
+          <div style="background:#eef2f4;border-radius:4px;overflow:hidden;height:14px">
+            <div style="width:${w}%;height:14px;background:linear-gradient(90deg,#1083B6,#04BAF0)"></div>
+          </div>
+        </td>
+        <td style="padding:5px 0 5px 8px;text-align:right;font-family:monospace;color:#1D4370">${Math.round(e.prodSec||0)} t</td>
+      </tr>`;
+    }).join('');
+    evolution = `
+      <h3 style="color:#1D4370;margin:22px 0 8px;font-size:15px">Évolution de la production</h3>
+      <p style="margin:0 0 10px;color:#5d6b73;font-size:12px">${derniers.length} dernières journées — écart de bouclage et production sèche.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr style="color:#5d6b73;font-size:11px;text-transform:uppercase">
+          <td style="padding-bottom:6px">Journée</td>
+          <td style="padding-bottom:6px;text-align:right">Écart</td>
+          <td style="padding-bottom:6px;text-align:center">Production</td>
+          <td style="padding-bottom:6px;text-align:right">t</td>
+        </tr>
+        ${lignes}
+      </table>`;
+  }
 
   return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto">
     <div style="background:linear-gradient(115deg,#1D4370,#1083B6);padding:22px 24px;border-radius:12px 12px 0 0">
@@ -75,6 +108,7 @@ function buildEmailHtml(R, day, line, interp, fmtDayFR) {
       <table style="width:100%;border-collapse:collapse;font-size:14px">${rows}</table>
       <h3 style="color:#1D4370;margin:22px 0 8px;font-size:15px">Interprétation</h3>
       ${paras}
+      ${evolution}
       <p style="margin-top:18px;color:#5d6b73;font-size:12px">Le rapport détaillé est en pièce jointe (PDF). Généré automatiquement — application interne Holcim.</p>
     </div>
   </div>`;

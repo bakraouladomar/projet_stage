@@ -13,6 +13,7 @@ const XLSX = require('xlsx');
 const { aggregate, finalize, DEFAULT_PARAMS } = require('./calc');
 const { buildInterpretation, buildPdf, fmtDayFR } = require('./report');
 const { sendReport, buildEmailHtml } = require('./mailer');
+const history = require('./history');
 
 const INBOX = path.join(__dirname, 'data', 'inbox');
 
@@ -58,7 +59,15 @@ function latestInboxFile() {
  */
 async function runPipeline(buffer, line = 'BC1', params = {}) {
   const { idx, rows } = readWorkbook(buffer);
-  if (!rows.length) throw new Error('Fichier sans données exploitables.');
+  return runPipelineFromData({ idx, rows }, line, params);
+}
+
+/**
+ * Variante : reçoit directement { idx, rows } (déjà parsés), ex. depuis Google Sheets.
+ * Le calcul est identique — seule la provenance des données change.
+ */
+async function runPipelineFromData({ idx, rows }, line = 'BC1', params = {}) {
+  if (!rows || !rows.length) throw new Error('Aucune donnée exploitable.');
   const p = Object.assign({}, DEFAULT_PARAMS, params);
   const agg = aggregate(rows, idx, line);
   const result = finalize(agg, p);
@@ -66,7 +75,17 @@ async function runPipeline(buffer, line = 'BC1', params = {}) {
 
   const interp = buildInterpretation(result, day, line);
   const pdf = await buildPdf(result, day, line, interp);
-  const html = buildEmailHtml(result, day, line, interp, fmtDayFR);
+
+  // Enregistrer ce jour dans l'historique, puis passer l'historique au mail
+  // pour y afficher l'évolution de la production.
+  let hist = [];
+  if (day) {
+    hist = history.upsert({
+      day, line, T2: result.T2, T3: result.T3, prodSec: result.prodSec,
+      seec: result.seec, heuresMarche: result.heuresMarche, arrets: result.arrets,
+    });
+  }
+  const html = buildEmailHtml(result, day, line, interp, fmtDayFR, hist);
 
   const subject = `Bilan Farine ${line} — ${fmtDayFR(day)} — ${interp.pos?'+':'−'}${Math.abs(result.T2).toFixed(1).replace('.',',')} %`;
   const send = await sendReport({
@@ -76,16 +95,31 @@ async function runPipeline(buffer, line = 'BC1', params = {}) {
   return { day, line, T2: result.T2, T3: result.T3, ...send };
 }
 
-/** Tâche programmée : prend le dernier fichier de l'inbox et envoie le rapport. */
+/**
+ * Tâche programmée. Source des données :
+ *   - si SHEET_ID est défini dans .env  -> lit le Google Sheet (dernier onglet)
+ *   - sinon                              -> prend le dernier fichier de data/inbox/
+ */
 async function runScheduled() {
-  const file = latestInboxFile();
-  if (!file) { console.warn('[scheduler] Aucun fichier dans data/inbox/ — envoi ignoré.'); return; }
-  console.log('[scheduler] Traitement de', path.basename(file));
+  const line = process.env.DEFAULT_LINE || 'BC1';
   try {
-    const buffer = fs.readFileSync(file);
-    const line = process.env.DEFAULT_LINE || 'BC1';
-    const res = await runPipeline(buffer, line);
-    console.log('[scheduler] Rapport envoyé :', res.accepted, '| T2', res.T2.toFixed(2), '%');
+    if (process.env.SHEET_ID) {
+      // --- Source : Google Sheet ---
+      const { lireGoogleSheet } = require('./googlesheet');
+      console.log('[scheduler] Lecture du Google Sheet…');
+      const { idx, rows, day, tab } = await lireGoogleSheet();
+      console.log(`[scheduler] Onglet « ${tab} » (${day || '?'}) — ${rows.length} lignes.`);
+      const res = await runPipelineFromData({ idx, rows }, line);
+      console.log('[scheduler] Rapport envoyé :', res.accepted, '| T2', res.T2.toFixed(2), '%');
+    } else {
+      // --- Source : fichier local (repli) ---
+      const file = latestInboxFile();
+      if (!file) { console.warn('[scheduler] Aucun fichier dans data/inbox/ — envoi ignoré.'); return; }
+      console.log('[scheduler] Traitement de', path.basename(file));
+      const buffer = fs.readFileSync(file);
+      const res = await runPipeline(buffer, line);
+      console.log('[scheduler] Rapport envoyé :', res.accepted, '| T2', res.T2.toFixed(2), '%');
+    }
   } catch (err) {
     console.error('[scheduler] Échec :', err.message);
   }
@@ -99,4 +133,4 @@ function startScheduler() {
   console.log(`[scheduler] Envoi programmé actif — planning « ${expr} » (fuseau ${process.env.TZ || 'Africa/Casablanca'}).`);
 }
 
-module.exports = { runPipeline, runScheduled, startScheduler, latestInboxFile };
+module.exports = { runPipeline, runPipelineFromData, runScheduled, startScheduler, latestInboxFile };

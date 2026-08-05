@@ -30,8 +30,8 @@ function buildInterpretation(R, day, line) {
   const siloMoved = (R.nivFirst != null && R.nivLast != null && !siloStuck);
 
   const headline = pos
-    ? `Écart de bouclage : +${fmt(R.T2,2)} %  (+${fmt(R.T3)} t inexpliquées)`
-    : `Écart de bouclage : −${fmt(Math.abs(R.T2),2)} %  (−${fmt(Math.abs(R.T3))} t manquantes)`;
+    ? `Écart de bouclage : +${fmt(R.T2,1)} %  (+${fmt(R.T3)} t inexpliquées)`
+    : `Écart de bouclage : −${fmt(Math.abs(R.T2),1)} %  (−${fmt(Math.abs(R.T3))} t manquantes)`;
 
   const summary = [
     { label: 'Production sèche',        value: `${fmt(R.prodSec,0)} t` },
@@ -110,7 +110,7 @@ function buildPdf(R, day, line, interp) {
        .text('ÉCART DE BOUCLAGE DU BILAN', M, y);
     y += 18;
     doc.font('Helvetica-Bold').fontSize(30).fillColor(pos ? NAVY : RED)
-       .text(`${pos?'+':'−'}${fmt(Math.abs(R.T2),2)} %`, M, y);
+       .text(`${pos?'+':'−'}${fmt(Math.abs(R.T2),1)} %`, M, y);
     doc.font('Helvetica').fontSize(12).fillColor(INK)
        .text(`${pos?'+':'−'}${fmt(Math.abs(R.T3))} t ${pos?'inexpliquées':'manquantes'}`, M+150, y+12);
     y += 52;
